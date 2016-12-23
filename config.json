@@ -1,0 +1,12 @@
+{
+    "oauth": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcd",
+    "user": "your_username",
+    "channel": "some_streamer",
+    
+    "discordEnable": true,
+    "discordToken": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456",
+    "discordChannel": "000000000000000000",
+    
+    "colorless": false,
+    "debug": false
+}
