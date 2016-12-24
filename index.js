@@ -247,6 +247,9 @@ var _onMessage = function(e) {
                     this.ws.close();
                     clearInterval(pingTimer);
                     clearTimeout(pingTimer2);
+                    if (t.error === 'ERR_BADAUTH') {
+                        console.log(colors.white.bold(Array(28+1).join(' ') + '(user is probably not a mod in the channel)'));
+                    }
                 }
             }
             break;
