@@ -1,11 +1,4 @@
 
-/** TO-DO
- * log output to file
- * add colorless-output mode as config-file setting and command-line argument
- * add discord logging as config-file setting and command-line argument
- * additional error fields?: ERR_BADMESSAGE, ERR_BADAUTH, ERR_SERVER, ERR_BADTOPIC
- */
-
 var WebSocket = require('ws');
 var request = require('request');
 var Eris = require("eris");
