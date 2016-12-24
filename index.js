@@ -286,7 +286,7 @@ var _onClose=function(e){
     console.log(colors.magenta.bold(' [' + (new Date()).toISOString() + '] ' + 'WebSocket connection closed'));
     clearInterval(pingTimer);
     clearTimeout(pingTimer2);
-    if (!PubSub.closeCalled) {
+    if (PubSub.closeCalled) {
         PubSub.closeCalled = false;
         console.log(colors.red.bold(Array(28+1).join(' ') + 'Reconnecting in 2 seconds'));
         PubSub.firstPong = false;
