@@ -65,38 +65,62 @@ if (args) {
             case '--colorless':
             case '--no-colors':
                 colorless();
+                console.log(colors.cyan.bold(' Colorless flag set'));
                 arg++;
                 break;
             case '-o':
             case '--oauth':
-                if (args[arg+1] && /^[0-9A-Za-z_]{2,25}$/.test(args[arg+1])) {
-                    config.oauth = args[arg+1];
-                    arg += 2;
+                if (args[arg+1]) {
+                    if (/^(?:oauth:)?[0-9A-Za-z_]{30}$/i.test(args[arg+1])) {
+                        config.oauth = args[arg+1];
+                        console.log(colors.cyan.bold(' OAuth key set'));
+                        arg += 2;
+                    }
+                    else {
+                        console.log(colors.yellow.bold(' OAuth key not set; OAuth key is not the proper format'));
+                        arg++;
+                    }
                 }
                 else {
-                    console.log();
+                    console.log(colors.yellow.bold(' OAuth key not set; no OAuth key was given'));
                     arg++;
                 }
                 break;
             case '-u':
             case '--user':
             case '--username':
-                if (args[arg+1] && /^[0-9A-Za-z_]{2,25}$/.test(args[arg+1])) {
-                    config.user = args[arg+1];
-                    arg += 2;
+                if (args[arg+1]) {
+                    if (/^[0-9A-Za-z_]{2,25}$/.test(args[arg+1])) {
+                        config.user = args[arg+1];
+                        console.log(colors.cyan.bold(' User set'));
+                        arg += 2;
+                    }
+                    else {
+                        console.log(colors.yellow.bold(' User not set; username is not the proper format'));
+                        arg++;
+                    }
                 }
                 else {
+                    console.log(colors.yellow.bold(' User not set; no user was given'));
                     arg++;
                 }
                 break;
             case '-c':
             case '--channel':
             case '--chan':
-                if (args[arg+1] && /^[0-9A-Za-z_]{2,25}$/.test(args[arg+1])) {
-                    config.user = args[arg+1];
-                    arg += 2;
+                if (args[arg+1]) {
+                    if (/^[0-9A-Za-z_]{2,25}$/.test(args[arg+1])) {
+                        config.user = args[arg+1];
+                        console.log(colors.cyan.bold(' Channel set'));
+                        arg += 2;
+                    }
+                    else {
+                        console.log(colors.yellow.bold(' Channel not set; channel username is not the proper format'));
+                        arg++;
+                    }
                 }
                 else {
+                    console.log(colors.yellow.bold(' Channel not set; no channel was given'));
                     arg++;
                 }
                 break;
@@ -105,25 +129,30 @@ if (args) {
             case '--purge-log':
             case '--purge-logs':
                 fs.writeFileSync('./mod-log.txt', '');
+                console.log(colors.cyan.bold(' Log file purged'));
                 arg++;
                 break;
             case '-d':
             case '--discord':
                 config.discordEnable = true;
+                console.log(colors.cyan.bold(' Discord flag set to false (will connect to Discord)'));
                 arg++;
                 break;
             case '-nd':
             case '--no-discord':
                 config.discordEnable = false;
+                console.log(colors.cyan.bold(' Discord flag set to false (will not connect to Discord)'));
                 arg++;
                 break;
             case '-dt':
             case '--discord-token':
                 if (args[arg+1]) {
                     config.discordToken = args[arg+1];
+                    console.log(colors.cyan.bold(' Discord token set'));
                     arg += 2;
                 }
                 else {
+                    console.log(colors.yellow.bold(' Discord token not set; no token was given'));
                     arg++;
                 }
                 break;
@@ -132,9 +161,11 @@ if (args) {
             case '--discord-chan':
                 if (args[arg+1]) {
                     config.discordChannel = args[arg+1];
+                    console.log(colors.cyan.bold(' Discord channel set'));
                     arg += 2;
                 }
                 else {
+                    console.log(colors.yellow.bold(' Discord channel not set; no channel was given'));
                     arg++;
                 }
                 break;
@@ -283,7 +314,7 @@ var _onError = function(e) {
 var _onClose=function(e){
     var self = this;
     
-    console.log(colors.magenta.bold(' [' + (new Date()).toISOString() + '] ' + 'WebSocket connection closed'));
+    console.log(colors.blue.bold(' [' + (new Date()).toISOString() + '] ') + colors.magenta.bold('WebSocket connection closed'));
     clearInterval(pingTimer);
     clearTimeout(pingTimer2);
     if (PubSub.closeCalled) {
@@ -298,7 +329,7 @@ var _onClose=function(e){
 var _onOpen=function(e){
     var self = this;
     
-    console.log(colors.green.bold(' ['+(new Date()).toISOString()+'] '+'WebSocket connection open'));
+    console.log(colors.blue.bold(' ['+(new Date()).toISOString()+'] ') + colors.green.bold('WebSocket connection open'));
     
     this.ws.send(JSON.stringify({
         type: 'PING'
