@@ -41,23 +41,27 @@ if (args) {
                 console.log('Options:');
                 console.log('  -h,        --help                    prints help message');
                 console.log('  -co,       --colorless,              use colorless mode');
-                console.log('  -nc,       --no-colors               (overrides colorless in config file)');
+                console.log('  -nc,       --no-colors                 (overrides colorless in config file)');
                 console.log('  -o (...),  --oauth (...)             set user oauth key');
-                console.log('                                       (overrides oauth key in config file)');
+                console.log('                                         (overrides oauth key in config file)');
                 console.log('  -u (...),  --user (...),             set user');
-                console.log('             --username (...)          (overrides user in config file)');
+                console.log('             --username (...)            (overrides user in config file)');
                 console.log('  -c (...),  --channel (...),          set channel');
-                console.log('             --chan (...)              (overrides channel in config file)');
+                console.log('             --chan (...)                (overrides channel in config file)');
                 console.log('  -p,        --purge,                  purge mod log file');
-                console.log('             --purge-log,              (WARNING: THIS WILL ERASE YOUR LOG FILE)');
+                console.log('             --purge-log,                (WARNING: THIS WILL ERASE YOUR LOG FILE)');
                 console.log('  -d,        --discord,                relay mod actions to a Discord channel');
-                console.log('                                       (overrides discordEnable in config file)');
+                console.log('                                         (overrides discordEnable in config file)');
                 console.log('  -nd,       --no-discord,             don\'t relay mod actions to a Discord channel');
-                console.log('                                       (overrides discordEnable in config file)');
+                console.log('                                         (overrides discordEnable in config file)');
                 console.log('  -dt (...), --discord-token (...)     Discord token');
-                console.log('                                       (overrides discordToken in config file)');
+                console.log('                                         (overrides discordToken in config file)');
                 console.log('  -dc (...), --discord-channel (...),  Discord channel');
-                console.log('             --discord-chan (...)      (overrides discordChannel in config file)');
+                console.log('             --discord-chan (...)        (overrides discordChannel in config file)');
+                console.log('  -nt,       --no-twitch,              don\'t connect to Twitch PubSub system on launch');
+                console.log('                                         (overrides twitchEnable in config file)');
+                console.log('  -t,        --twitch                  connect to Twitch PubSub system on launch');
+                console.log('                                         (overrides twitchEnable in config file)');
                 process.exit();
             
             case '-co':
@@ -168,6 +172,18 @@ if (args) {
                     console.log(colors.yellow.bold(' Discord channel not set; no channel was given'));
                     arg++;
                 }
+                break;
+            case '-nt':
+            case '--no-twitch':
+                config.twitchEnable = false;
+                console.log(colors.cyan.bold(' Twitch flag set to false (will not connect to Twitch PubSub system)'));
+                arg++;
+                break;
+            case '-t':
+            case '--twitch':
+                config.twitchEnable = true;
+                console.log(colors.cyan.bold(' Twitch flag set to true (will connect to Twitch PubSub system)'));
+                arg++;
                 break;
             default:
                 arg++;
@@ -441,6 +457,28 @@ var checkIDs = function() {
     }
 };
 
+var twitchInit = function() {
+    if (userids[config.channel] && userids[config.user]) {
+        connect();
+    }
+    else {
+        if (!userids[config.channel]) {
+            console.log(colors.magenta.bold('Waiting for channel ID lookup'));
+            lookupID(config.channel, function(id) {
+                userids[config.channel] = id;
+                checkIDs();
+            });
+        }
+        if (!userids[config.user]) {
+            console.log(colors.magenta.bold('Waiting for user ID lookup'));
+            lookupID(config.user, function(id) {
+                userids[config.user] = id;
+                checkIDs();
+            });
+        }
+    }
+};
+
 /** DISCORD
  *
  */
@@ -462,22 +500,25 @@ var discordSend = function(action, message) {
     }
 };
 
-if (config.discordEnable) {
-    if (config.discordToken && config.discordChannel) {
-        console.log(colors.magenta.bold(' Connecting to Discord'));
-        
-        var discord = new Eris(config.discordToken);
-        
-        discord.on('ready', function() {
-            console.log(colors.green.bold(' Connected to Discord'));
-        });
-        
-        discord.connect();
+var discord;
+var discordInit = function() {
+    if (config.discordEnable) {
+        if (config.discordToken && config.discordChannel) {
+            console.log(colors.magenta.bold(' Connecting to Discord'));
+            
+            var discord = new Eris(config.discordToken);
+            
+            discord.on('ready', function() {
+                console.log(colors.green.bold(' Connected to Discord'));
+            });
+            
+            discord.connect();
+        }
+        else {
+            console.log(colors.yellow.bold(' Unable to connect to Discord: ' + (config.discordToken ? 'discordToken' : '') + ((!config.discordToken && !config.discordChannel) ? ' and ' : '') + (config.discordChannel ? 'discordChannel' : '') + ' not set in config file'));
+        }
     }
-    else {
-        console.log(colors.yellow.bold(' Unable to connect to Discord: ' + (config.discordToken ? 'discordToken' : '') + ((!config.discordToken && !config.discordChannel) ? ' and ' : '') + (config.discordChannel ? 'discordChannel' : '') + ' not set in config file'));
-    }
-}
+};
 
 /** PRINT
  *
@@ -539,25 +580,8 @@ function done() {
  */
 
 function main() {
-    if (userids[config.channel] && userids[config.user]) {
-        connect();
-    }
-    else {
-        if (!userids[config.channel]) {
-            console.log(colors.magenta.bold('Waiting for channel ID lookup'));
-            lookupID(config.channel, function(id) {
-                userids[config.channel] = id;
-                checkIDs();
-            });
-        }
-        if (!userids[config.user]) {
-            console.log(colors.magenta.bold('Waiting for user ID lookup'));
-            lookupID(config.user, function(id) {
-                userids[config.user] = id;
-                checkIDs();
-            });
-        }
-    }
+    config.twitchEnable && twitchInit();
+    config.discordEnable && discordInit();
 }
 
 main();
