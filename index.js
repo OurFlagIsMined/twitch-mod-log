@@ -76,7 +76,7 @@ if (args) {
                 break;
             case '-o':
             case '--oauth':
-                if (args[arg+1] && args[arg+1].indexOf('-') !== 0) {
+                if (args[arg+1] && args[arg+1][0] !== '-') {
                     if (/^(?:oauth:)?[0-9A-Za-z_]{30}$/i.test(args[arg+1])) {
                         config.oauth = args[arg+1];
                         console.log(colors.cyan.bold(' OAuth key set'));
@@ -95,7 +95,7 @@ if (args) {
             case '-u':
             case '--user':
             case '--username':
-                if (args[arg+1] && args[arg+1].indexOf('-') !== 0) {
+                if (args[arg+1] && args[arg+1][0] !== '-') {
                     if (/^[0-9A-Za-z_]{2,25}$/.test(args[arg+1])) {
                         config.user = args[arg+1];
                         console.log(colors.cyan.bold(' User set'));
@@ -114,7 +114,7 @@ if (args) {
             case '-c':
             case '--channel':
             case '--chan':
-                if (args[arg+1] && args[arg+1].indexOf('-') !== 0) {
+                if (args[arg+1] && args[arg+1][0] !== '-') {
                     if (/^[0-9A-Za-z_]{2,25}$/.test(args[arg+1])) {
                         config.channel = args[arg+1];
                         console.log(colors.cyan.bold(' Channel set'));
@@ -152,14 +152,14 @@ if (args) {
                 break;
             case '-dt':
             case '--discord-token':
-                if (args[arg+1] && args[arg+1].indexOf('-') !== 0) {
+                if (args[arg+1] && (args[arg+1][0] !== '-' || args[arg+1].length >= 50)) {
                     config.discordToken = args[arg+1];
                     console.log(colors.cyan.bold(' Discord token set'));
                     arg += 2;
                 }
                 else {
                     console.log(colors.yellow.bold(' Discord token not set; no token was given'));
-                    arg += 2;
+                    arg++;
                 }
                 break;
             case '-dc':
@@ -172,7 +172,7 @@ if (args) {
                 }
                 else {
                     console.log(colors.yellow.bold(' Discord channel not set; no channel was given'));
-                    arg += 2;
+                    arg++;
                 }
                 break;
             case '-nt':
