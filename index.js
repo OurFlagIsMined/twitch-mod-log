@@ -141,7 +141,7 @@ if (args) {
             case '-d':
             case '--discord':
                 config.discordEnable = true;
-                console.log(colors.cyan.bold(' Discord flag set to false (will connect to Discord)'));
+                console.log(colors.cyan.bold(' Discord flag set to true (will connect to Discord)'));
                 arg++;
                 break;
             case '-nd':
