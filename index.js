@@ -36,10 +36,12 @@ if (args) {
         switch (args[arg]) {
             case '-h':
             case '--help':
+            case '/?':
                 console.log('Usage: node index.js [options] ');
                 console.log('');
                 console.log('Options:');
-                console.log('  -h,        --help                    prints help message');
+                console.log('  -h,        --help,                   prints help message');
+                console.log('  /?');
                 console.log('  -co,       --colorless,              use colorless mode');
                 console.log('  -nc,       --no-colors                 (overrides colorless in config file)');
                 console.log('  -o (...),  --oauth (...)             set user oauth key');
@@ -74,7 +76,7 @@ if (args) {
                 break;
             case '-o':
             case '--oauth':
-                if (args[arg+1]) {
+                if (args[arg+1] && args[arg+1].indexOf('-') !== 0) {
                     if (/^(?:oauth:)?[0-9A-Za-z_]{30}$/i.test(args[arg+1])) {
                         config.oauth = args[arg+1];
                         console.log(colors.cyan.bold(' OAuth key set'));
@@ -82,7 +84,7 @@ if (args) {
                     }
                     else {
                         console.log(colors.yellow.bold(' OAuth key not set; OAuth key is not the proper format'));
-                        arg++;
+                        arg += 2;
                     }
                 }
                 else {
@@ -93,7 +95,7 @@ if (args) {
             case '-u':
             case '--user':
             case '--username':
-                if (args[arg+1]) {
+                if (args[arg+1] && args[arg+1].indexOf('-') !== 0) {
                     if (/^[0-9A-Za-z_]{2,25}$/.test(args[arg+1])) {
                         config.user = args[arg+1];
                         console.log(colors.cyan.bold(' User set'));
@@ -101,7 +103,7 @@ if (args) {
                     }
                     else {
                         console.log(colors.yellow.bold(' User not set; username is not the proper format'));
-                        arg++;
+                        arg += 2;
                     }
                 }
                 else {
@@ -112,15 +114,15 @@ if (args) {
             case '-c':
             case '--channel':
             case '--chan':
-                if (args[arg+1]) {
+                if (args[arg+1] && args[arg+1].indexOf('-') !== 0) {
                     if (/^[0-9A-Za-z_]{2,25}$/.test(args[arg+1])) {
-                        config.user = args[arg+1];
+                        config.channel = args[arg+1];
                         console.log(colors.cyan.bold(' Channel set'));
                         arg += 2;
                     }
                     else {
                         console.log(colors.yellow.bold(' Channel not set; channel username is not the proper format'));
-                        arg++;
+                        arg += 2;
                     }
                 }
                 else {
@@ -150,27 +152,27 @@ if (args) {
                 break;
             case '-dt':
             case '--discord-token':
-                if (args[arg+1]) {
+                if (args[arg+1] && args[arg+1].indexOf('-') !== 0) {
                     config.discordToken = args[arg+1];
                     console.log(colors.cyan.bold(' Discord token set'));
                     arg += 2;
                 }
                 else {
                     console.log(colors.yellow.bold(' Discord token not set; no token was given'));
-                    arg++;
+                    arg += 2;
                 }
                 break;
             case '-dc':
             case '--discord-channel':
             case '--discord-chan':
-                if (args[arg+1]) {
+                if (args[arg+1] && args[arg+1].indexOf('-') !== 0) {
                     config.discordChannel = args[arg+1];
                     console.log(colors.cyan.bold(' Discord channel set'));
                     arg += 2;
                 }
                 else {
                     console.log(colors.yellow.bold(' Discord channel not set; no channel was given'));
-                    arg++;
+                    arg += 2;
                 }
                 break;
             case '-nt':
