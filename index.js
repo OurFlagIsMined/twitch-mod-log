@@ -380,7 +380,7 @@ var _onOpen=function(e){
 
 var connect = function() {
     var self = this;
-    console.log(colors.green.bold(' Connecting'));
+    console.log(colors.blue.bold(' [' + (new Date()).toISOString() + '] ') + colors.green.bold('Connecting to Twitch'));
     this.ws = new WebSocket('wss://pubsub-edge.twitch.tv/v1', {
         protocolVersion: 13, 
         origin: 'https://www.twitch.tv'
@@ -506,12 +506,12 @@ var discord;
 var discordInit = function() {
     if (config.discordEnable) {
         if (config.discordToken && config.discordChannel) {
-            console.log(colors.magenta.bold(' Connecting to Discord'));
+            console.log(colors.blue.bold(' [' + (new Date()).toISOString() + '] ') + colors.magenta.bold('Connecting to Discord'));
             
             var discord = new Eris(config.discordToken);
             
             discord.on('ready', function() {
-                console.log(colors.green.bold(' Connected to Discord'));
+                console.log(colors.blue.bold(' [' + (new Date()).toISOString() + '] ') + colors.green.bold('Connected to Discord'));
             });
             
             discord.connect();
