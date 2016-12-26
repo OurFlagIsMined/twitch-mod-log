@@ -7,6 +7,7 @@ Logs to file. Optionally logs to a discord channel of your choice.
 
 ## How to setup
 
+Navigate to the package directory and run:<br>
 `npm install`
 
 
@@ -14,11 +15,14 @@ Logs to file. Optionally logs to a discord channel of your choice.
 
 Edit the `config.json` file and fill in your details.
 
+Then navigate to the package directory and run:<br>
+`node index.js`
+
 
 ## How to use (command-line)
 
 ```plaintext
-Usage: node index.js [options] 
+Usage: node index.js [options]
 
 Options:
   -h,        --help                    prints help message

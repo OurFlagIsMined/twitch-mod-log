@@ -5,7 +5,7 @@
   "main": "./index.js",
   "dependencies": {
     "ws": "^0.7.2",
-	"request": "^2.53.0",
+    "request": "^2.53.0",
     "colors": "^1.0.3",
     "eris": "^0.3.0"
   },

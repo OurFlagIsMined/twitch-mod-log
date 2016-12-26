@@ -37,7 +37,7 @@ if (args) {
             case '-h':
             case '--help':
             case '/?':
-                console.log('Usage: node index.js [options] ');
+                console.log('Usage: node index.js [options]');
                 console.log('');
                 console.log('Options:');
                 console.log('  -h,        --help,                   prints help message');
