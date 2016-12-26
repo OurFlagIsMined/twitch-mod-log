@@ -49,7 +49,7 @@ Options:
 
 ## Bugs
 
-- Custom discord scripts (`discord-custom.js`) are broken
+- No bugs currently found
 
 
 ## To-do

@@ -508,7 +508,7 @@ var discordInit = function() {
         if (config.discordToken && config.discordChannel) {
             console.log(colors.blue.bold(' [' + (new Date()).toISOString() + '] ') + colors.magenta.bold('Connecting to Discord'));
             
-            var discord = new Eris(config.discordToken);
+            discord = new Eris(config.discordToken);
             
             discord.on('ready', function() {
                 console.log(colors.blue.bold(' [' + (new Date()).toISOString() + '] ') + colors.green.bold('Connected to Discord'));
