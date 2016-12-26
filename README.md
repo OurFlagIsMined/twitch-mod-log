@@ -47,6 +47,11 @@ Options:
 ```
 
 
+## Bugs
+
+- Custom discord scripts (`discord-custom.js`) are broken
+
+
 ## To-do
 
 - Web server for displaying the logs, with sort-options
