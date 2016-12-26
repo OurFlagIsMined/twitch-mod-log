@@ -1,4 +1,5 @@
 {
+    "twitchEnable": true,
     "oauth": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcd",
     "user": "your_username",
     "channel": "some_streamer",
