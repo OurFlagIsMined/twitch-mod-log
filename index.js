@@ -215,7 +215,7 @@ var pingTimer2;
 var PubSub = {
     firstPong: false,
     onFirstPong: undefined,
-    closeCalled: false
+    noReconnect: false
 };
 var nonce=function(){
     var str='';
@@ -265,6 +265,7 @@ var _onMessage = function(e) {
                     this.ws.close();
                     clearInterval(pingTimer);
                     clearTimeout(pingTimer2);
+                    PubSub.noReconnect = true;
                     if (t.error === 'ERR_BADAUTH') {
                         console.log(colors.white.bold(Array(28+1).join(' ') + '(user is probably not a mod in the channel)'));
                     }
@@ -310,7 +311,6 @@ var _onMessage = function(e) {
             clearInterval(pingTimer);
             clearTimeout(pingTimer2);
             PubSub.firstPong = false;
-            PubSub.closeCalled = true;
             connect();
         }
     } catch (e) {
@@ -327,7 +327,6 @@ var _onError = function(e) {
     clearInterval(pingTimer);
     clearTimeout(pingTimer2);
     PubSub.firstPong = false;
-    PubSub.closeCalled = true;
     setTimeout(function() {
         connect();
     }, 2e3);
@@ -338,8 +337,7 @@ var _onClose=function(e){
     console.log(colors.blue.bold(' [' + (new Date()).toISOString() + '] ') + colors.magenta.bold('WebSocket connection closed'));
     clearInterval(pingTimer);
     clearTimeout(pingTimer2);
-    if (PubSub.closeCalled) {
-        PubSub.closeCalled = false;
+    if (!PubSub.noReconnect) {
         console.log(colors.red.bold(Array(28+1).join(' ') + 'Reconnecting in 2 seconds'));
         PubSub.firstPong = false;
         setTimeout(function() {
