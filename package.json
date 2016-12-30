@@ -1,6 +1,6 @@
 {
   "name": "twitch-mod-log",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Uses Twitch's PubSub system to log moderator actions in a chat room",
   "main": "./index.js",
   "dependencies": {
