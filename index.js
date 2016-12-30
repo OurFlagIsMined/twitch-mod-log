@@ -5,6 +5,7 @@ var Eris = require("eris");
 var colors = require('colors/safe');
 var fs = require('fs');
 var os = require('os');
+var util = require('util');
 
 var config = require('./config.json');
 var userids = require('./userids.json');
@@ -15,15 +16,9 @@ var discordCustom = fs.existsSync('./discord-custom.js') && require('./discord-c
  *
  */
 
-var colorless = function() {
-    for (key in colors.styles) {
-        colors.styles[key].open = '';
-        colors.styles[key].close = '';
-        colors.styles[key].closeRe = /(?:)/g;
-    }
-};
-
-config.colorless && colorless();
+if (config.colorless) {
+    colors.enabled = false;
+}
 
 /** CLI
  *
@@ -44,6 +39,8 @@ if (args) {
                 console.log('  /?');
                 console.log('  -co,       --colorless,              use colorless mode');
                 console.log('  -nc,       --no-colors                 (overrides colorless in config file)');
+                console.log('             --colors                  use colors');
+                console.log('                                         (overrides colorless in config file)');
                 console.log('  -o (...),  --oauth (...)             set user oauth key');
                 console.log('                                         (overrides oauth key in config file)');
                 console.log('  -u (...),  --user (...),             set user');
@@ -70,8 +67,23 @@ if (args) {
             case '-nc':
             case '--colorless':
             case '--no-colors':
-                colorless();
-                console.log(colors.cyan.bold(' Colorless flag set'));
+                config.colorless = true;
+                colors.enabled = false;
+                console.log(colors.cyan.bold(' Colorless flag set to true (will not use colors)'));
+                arg++;
+                break;
+            default:
+                arg++;
+                break;
+        }
+    }
+    arg = 0;
+    while (arg < args.length) {
+        switch (args[arg]) {
+            case '--colors':
+                config.colorless = false;
+                colors.enabled = true;
+                console.log(colors.cyan.bold(' Colorless flag set to false (will use colors)'));
                 arg++;
                 break;
             case '-o':
@@ -559,10 +571,20 @@ process.stdin.on('data', function (text) {
             print(e);
         }
     }
+    else if (strip.slice(0,8) === 'inspect ') {
+        try {
+            console.log(util.inspect(eval(strip.slice(8)), {colors: !config.colorless}));
+        }
+        catch(e) {
+            print(colors.yellow('Error.'));
+            print(e);
+        }
+    }
     else if (strip === 'help') {
         print('quit');
         print('eval ...');
         print('print ...');
+        print('inspect ...');
         print('help');
     }
     else {
