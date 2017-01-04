@@ -25,25 +25,31 @@ Then navigate to the package directory and run:<br>
 Usage: node index.js [options]
 
 Options:
-  -h,        --help                    prints help message
-  -co,       --colorless,              use colorless mode
-  -nc,       --no-colors               (overrides colorless in config file)
+  -h,  /?,   --help,                   prints help message
+  -co, -nc,  --colorless,              use colorless mode
+             --no-colors                 (overrides colorless in config file)
+  -fc,       --force-colors,           use colors
+             --colors                    (overrides colorless in config file)
   -o (...),  --oauth (...)             set user oauth key
-                                       (overrides oauth key in config file)
+                                         (overrides oauth key in config file)
   -u (...),  --user (...),             set user
-             --username (...)          (overrides user in config file)
+             --username (...)            (overrides user in config file)
   -c (...),  --channel (...),          set channel
-             --chan (...)              (overrides channel in config file)
+             --chan (...)                (overrides channel in config file)
   -p,        --purge,                  purge mod log file
-             --purge-log,              (WARNING: THIS WILL ERASE YOUR LOG FILE)
+             --purge-log,                (WARNING: THIS WILL ERASE YOUR LOG FILE)
   -d,        --discord,                relay mod actions to a Discord channel
-                                       (overrides discordEnable in config file)
-  -nd,       --no-discord,             don't relay mod actions to a Discord channel
-                                       (overrides discordEnable in config file)
+                                         (overrides discordEnable in config file)
+  -nd,       --no-discord,             don\'t relay mod actions to a Discord channel
+                                         (overrides discordEnable in config file)
   -dt (...), --discord-token (...)     Discord token
-                                       (overrides discordToken in config file)
+                                         (overrides discordToken in config file)
   -dc (...), --discord-channel (...),  Discord channel
-             --discord-chan (...)      (overrides discordChannel in config file)
+             --discord-chan (...)        (overrides discordChannel in config file)
+  -nt,       --no-twitch,              don\'t connect to Twitch PubSub system on launch
+                                         (overrides twitchEnable in config file)
+  -t,        --twitch                  connect to Twitch PubSub system on launch
+                                         (overrides twitchEnable in config file)
 ```
 
 
