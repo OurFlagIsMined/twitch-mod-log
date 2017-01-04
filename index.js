@@ -35,12 +35,11 @@ if (args) {
                 console.log('Usage: node index.js [options]');
                 console.log('');
                 console.log('Options:');
-                console.log('  -h,        --help,                   prints help message');
-                console.log('  /?');
-                console.log('  -co,       --colorless,              use colorless mode');
-                console.log('  -nc,       --no-colors                 (overrides colorless in config file)');
-                console.log('             --colors                  use colors');
-                console.log('                                         (overrides colorless in config file)');
+                console.log('  -h,  /?,   --help,                   prints help message');
+                console.log('  -co, -nc,  --colorless,              use colorless mode');
+                console.log('             --no-colors                 (overrides colorless in config file)');
+                console.log('  -fc,       --force-colors,           use colors');
+                console.log('             --colors                    (overrides colorless in config file)');
                 console.log('  -o (...),  --oauth (...)             set user oauth key');
                 console.log('                                         (overrides oauth key in config file)');
                 console.log('  -u (...),  --user (...),             set user');
@@ -80,6 +79,8 @@ if (args) {
     arg = 0;
     while (arg < args.length) {
         switch (args[arg]) {
+            case '-fc':
+            case '--force-colors':
             case '--colors':
                 config.colorless = false;
                 colors.enabled = true;
