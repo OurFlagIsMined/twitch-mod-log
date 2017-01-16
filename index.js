@@ -6,11 +6,18 @@ var colors = require('colors/safe');
 var fs = require('fs');
 var os = require('os');
 var util = require('util');
+var path = require('path');
 
 var config = require('./config.json');
 var userids = require('./userids.json');
 
 var discordCustom = fs.existsSync('./discord-custom.js') && require('./discord-custom.js');
+
+/** PATH
+ *
+ */
+
+var writeDir = path.parse(module.filename).dir + path.sep;
 
 /** COLORLESS
  *
@@ -147,7 +154,7 @@ if (args) {
             case '--purge':
             case '--purge-log':
             case '--purge-logs':
-                fs.writeFileSync('./mod-log.txt', '');
+                fs.writeFileSync(writeDir + 'mod-log.txt', '');
                 console.log(colors.cyan.bold(' Log file purged'));
                 arg++;
                 break;
@@ -406,7 +413,7 @@ var connect = function() {
  *
  */
 
-var writeStream = new fs.WriteStream('./mod-log.txt', {
+var writeStream = new fs.WriteStream(writeDir + 'mod-log.txt', {
     'flags': 'a+',
     'encoding': 'utf-8',
     'mode': 0666
