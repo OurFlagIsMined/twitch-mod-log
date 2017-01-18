@@ -604,7 +604,7 @@ process.stdin.on('data', function (text) {
         }
         else if (strip === 'help') {
             print ('quit');
-            print2('  (or ".quit")');
+            print2('  (or ".exit")');
             print2('  terminate process');
             print ('eval ...');
             print2('  evaluate an expression');
@@ -625,7 +625,7 @@ process.stdin.on('data', function (text) {
     }
     else {
         if (strip.length > 0) {
-            if (strip === '.quit') {
+            if (strip === '.exit') {
                 done();
             }
             else if (strip === 'norepl') {
@@ -634,7 +634,7 @@ process.stdin.on('data', function (text) {
             }
             else {
                 try {
-                    console.log(util.inspect(eval(strip), {colors: true}));
+                    console.log(util.inspect(eval(strip), {colors: !config.colorless}));
                 }
                 catch(e) {
                     console.log(e.stack);
