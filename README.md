@@ -53,9 +53,15 @@ Options:
 ```
 
 
+## Notes on using
+
+- Type `help` for a list of availble CLI options once the program is running
+- Type `repl` to enter an emulated REPL environment (useful for debugging)
+
+
 ## Bugs
 
-- No bugs currently found
+- Some of the dependencies have a tendency to crash (especially on Windows); it's recommended that you use a watchdog process of your choice to auto-restart the process in the event that it terminates unexpectedly.
 
 
 ## To-do

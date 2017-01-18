@@ -19,6 +19,14 @@ var discordCustom = fs.existsSync('./discord-custom.js') && require('./discord-c
 
 var writeDir = path.parse(module.filename).dir + path.sep;
 
+/** FLAGS
+ *
+ */
+
+var flags = {
+    repl: false
+};
+
 /** COLORLESS
  *
  */
@@ -545,6 +553,7 @@ var discordInit = function() {
  */
 
 var print = function(str) {console.log(colors.bold('>' + str));};
+var print2 = function(str) {console.log('>' + str);};
 
 /** STDIN
  *
@@ -554,49 +563,84 @@ process.stdin.resume();
 process.stdin.setEncoding('utf8');
 
 process.stdin.on('data', function (text) {
-    var strip = text.slice(0,-os.EOL.length);
+    var strip = text.slice(0, -os.EOL.length);
     
-    console.log(colors.bold('<' + strip));
-    
-    if (strip === 'quit') {
-        done();
-    }
-    else if (strip.slice(0,5) === 'eval ') {
-        try {
-            eval(strip.slice(5));
+    if (!flags.repl) {
+        console.log(colors.bold('<' + strip));
+        
+        if (strip === 'quit' || strip === '.quit') {
+            done();
         }
-        catch(e) {
-            print(colors.yellow('Error.'));
-            print(e);
+        else if (strip.slice(0,5) === 'eval ') {
+            try {
+                eval(strip.slice(5));
+            }
+            catch(e) {
+                print(colors.yellow('Error.'));
+                print(e);
+            }
         }
-    }
-    else if (strip.slice(0,6) === 'print ') {
-        try {
-            print(eval(strip.slice(6)));
+        else if (strip.slice(0,6) === 'print ') {
+            try {
+                print(eval(strip.slice(6)));
+            }
+            catch(e) {
+                print(colors.yellow('Error.'));
+                print(e);
+            }
         }
-        catch(e) {
-            print(colors.yellow('Error.'));
-            print(e);
+        else if (strip.slice(0,8) === 'inspect ') {
+            try {
+                console.log(util.inspect(eval(strip.slice(8)), {colors: !config.colorless}));
+            }
+            catch(e) {
+                print(colors.yellow('Error.'));
+                print(e);
+            }
         }
-    }
-    else if (strip.slice(0,8) === 'inspect ') {
-        try {
-            console.log(util.inspect(eval(strip.slice(8)), {colors: !config.colorless}));
+        else if (strip === 'repl') {
+            flags.repl = true;
+            print('Using REPL environment.');
         }
-        catch(e) {
-            print(colors.yellow('Error.'));
-            print(e);
+        else if (strip === 'help') {
+            print ('quit');
+            print2('  (or ".quit")');
+            print2('  terminate process');
+            print ('eval ...');
+            print2('  evaluate an expression');
+            print ('print ...');
+            print2('  print the result of an expression');
+            print ('inspect ...');
+            print2('  inspect an object');
+            print ('repl');
+            print2('  simulate a REPL environment');
+            print2('  (use ".quit" to quit)');
+            print2('  (use "norepl" to return to to this environment)');
+            print ('help');
+            print2('  print this help message');
         }
-    }
-    else if (strip === 'help') {
-        print('quit');
-        print('eval ...');
-        print('print ...');
-        print('inspect ...');
-        print('help');
+        else {
+            print(colors.yellow('Command not recognized.'));
+        }
     }
     else {
-        print(colors.yellow('Command not recognized.'));
+        if (strip.length > 0) {
+            if (strip === '.quit') {
+                done();
+            }
+            else if (strip === 'norepl') {
+                flags.repl = false;
+                print('Leaving REPL environment.');
+            }
+            else {
+                try {
+                    console.log(util.inspect(eval(strip), {colors: true}));
+                }
+                catch(e) {
+                    console.log(e.stack);
+                }
+            }
+        }
     }
 });
 
