@@ -600,7 +600,7 @@ process.stdin.on('data', function (text) {
         }
         else if (strip === 'repl') {
             flags.repl = true;
-            print('Using REPL environment.');
+            print('Entering REPL environment.');
         }
         else if (strip === 'help') {
             print ('quit');
@@ -614,7 +614,7 @@ process.stdin.on('data', function (text) {
             print2('  inspect an object');
             print ('repl');
             print2('  simulate a REPL environment');
-            print2('  (use ".quit" to quit)');
+            print2('  (use ".exit" to terminate the process)');
             print2('  (use "norepl" to return to to this environment)');
             print ('help');
             print2('  print this help message');
@@ -625,12 +625,17 @@ process.stdin.on('data', function (text) {
     }
     else {
         if (strip.length > 0) {
-            if (strip === '.exit') {
-                done();
-            }
-            else if (strip === 'norepl') {
+            if (strip === 'norepl') {
                 flags.repl = false;
                 print('Leaving REPL environment.');
+            }
+            else if (strip === '.exit') {
+                done();
+            }
+            else if (strip === 'help') {
+                console.log(colors.bold('norepl : Leave the REPL environment'));
+                console.log(colors.bold('.exit  : Terminate the process'));
+                console.log(colors.bold('help   : The help document you\'re currently viewing'));
             }
             else {
                 try {
