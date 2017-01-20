@@ -334,12 +334,8 @@ var _onMessage = function(e) {
             }
             break;
         case 'RECONNECT':
-            console.log(colors.magenta.bold(' Reconect-request received; reconnecting now'));
+            console.log(colors.magenta.bold(' Reconect-request received; resetting connection'));
             this.ws.close();
-            clearInterval(pingTimer);
-            clearTimeout(pingTimer2);
-            PubSub.firstPong = false;
-            connect();
         }
     } catch (e) {
         console.log(colors.blue.bold(' [' + now.toISOString() + '] ') + colors.yellow.bold('Error parsing JSON message:'));
@@ -349,15 +345,9 @@ var _onMessage = function(e) {
 var _onError = function(e) {
     var self = this;
     
-    console.log(colors.yellow.bold(' [' + (new Date()).toISOString() + '] ' + 'WebSocket error; reconnecting in 2 seconds:'));
+    console.log(colors.yellow.bold(' [' + (new Date()).toISOString() + '] ' + 'WebSocket error; resetting connection:'));
     console.log(e);
     this.ws.close();
-    clearInterval(pingTimer);
-    clearTimeout(pingTimer2);
-    PubSub.firstPong = false;
-    setTimeout(function() {
-        connect();
-    }, 2e3);
 };
 var _onClose=function(e){
     var self = this;
